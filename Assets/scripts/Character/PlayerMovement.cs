@@ -1,80 +1,103 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class PlayerMovement : MonoBehaviour
+namespace Character
 {
-    [SerializeField] private float _speed = 5f;
-    [SerializeField] private float jumpForce  = 5f;
-    [SerializeField] private LayerMask _aniLayerMask;
-    [SerializeField] private Transform cameraTransform;
-
-    Animator _animatior;
-    private Rigidbody rb;
-    private bool _isGround = false;
-
-    private void Awake()
+    public class PlayerMovement : MonoBehaviour
     {
-        _animatior = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
-    }
+        public float speed = 1f;
+        public bool isGround = false;
+        [SerializeField] private float _sprintSpeed = 5f;
+        [SerializeField] private float jumpForce  = 5f;
+        [SerializeField] private float rotationSpeed = 5f;
+        [SerializeField] private Transform cameraTransform;
+        private Rigidbody rb;
+        private Animator animator;
+        private float velocity;
+        
+        private static readonly int Speed = Animator.StringToHash("speed");
+        private static readonly int IsInAir = Animator.StringToHash("isInAir");
+        private static readonly int Jump = Animator.StringToHash("jump");
 
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(horizontal, 0f, vertical);
-
-        if (movement.magnitude > 0)
+        private void Awake()
         {
-            movement.Normalize();
-            movement *= _speed * Time.deltaTime;
-            movement = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * movement;
-            transform.Translate(movement, Space.World);
+            rb = GetComponent<Rigidbody>();
+            animator = GetComponent<Animator>();
         }
 
-
-        float velocityZ = Vector3.Dot(movement.normalized, transform.forward);
-        float velocityX = Vector3.Dot(movement.normalized, transform.right);
-        if (Input.GetButton("Jump"))
+        void Start()
         {
-            if (_isGround)
-            {
-                rb.AddForce(Vector3.up * (jumpForce * Time.deltaTime), ForceMode.Impulse);
+        }
 
+        void Update()
+        {
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+            speed = Input.GetButton("Sprint") ? _sprintSpeed : 1f;
+            animator.SetFloat(Speed, 0);
+            
+            Vector3 movementVec = new Vector3(horizontal, 0f, vertical);
+
+            if (movementVec.magnitude > 0)
+            {
+                animator.SetFloat(Speed, speed);
+                movementVec.Normalize();
+                movementVec *= speed * Time.deltaTime;
+                movementVec = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * movementVec;
+                transform.Translate(movementVec, Space.World);
+            }
+
+            if (movementVec != Vector3.zero)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(movementVec, Vector3.up);
+            
+                transform.rotation =
+                    Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            }
+
+
+            // float velocityZ = Vector3.Dot(movementVec.normalized, transform.forward);
+            // float velocityX = Vector3.Dot(movementVec.normalized, transform.right);
+            if (Input.GetButton("Jump"))
+            {
+                
+                if (isGround)
+                {
+                    rb.AddForce(Vector3.up * (jumpForce * Time.deltaTime), ForceMode.Impulse);
+                    
+                    
+                }
             }
         }
-    }
 
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus)
+        private void OnApplicationFocus(bool hasFocus)
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            if (hasFocus)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
         }
-        else
+
+
+        void OnCollisionStay(Collision other)
         {
-            Cursor.lockState = CursorLockMode.None;
+            if (other.gameObject.CompareTag($"Ground")) isGround = true;
+            animator.SetBool(IsInAir, !isGround);
         }
-    }
 
-
-    void OnCollisionStay(Collision other)
-    {
-        if (other.gameObject.CompareTag($"Ground")) _isGround = true;
-    }
-
-    void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.CompareTag($"Ground")) _isGround = false;
-    }
+        void OnCollisionExit(Collision other)
+        {
+            if (other.gameObject.CompareTag($"Ground")) isGround = false;
+            animator.SetBool(IsInAir, !isGround);
+        }
+        
+        
     
 
-    // Update is called once per frame
+        // Update is called once per frame
+    }
 }
