@@ -7,6 +7,7 @@ namespace Character
     {
         public float speed = 1f;
         public bool isGround = false;
+        public int coins = 0;
         [SerializeField] private float _sprintSpeed = 5f;
         [SerializeField] private float jumpForce  = 5f;
         [SerializeField] private float rotationSpeed = 5f;
