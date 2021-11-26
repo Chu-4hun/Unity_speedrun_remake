@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxHendler : MonoBehaviour, IAttackable
+public class boxHandler : MonoBehaviour, IAttackable
 
 {
     public int Health = 30;
@@ -16,7 +16,6 @@ public class BoxHendler : MonoBehaviour, IAttackable
     private void FixedUpdate()
     {
         if (Health < -0) DestroyBox();
-
     }
 
     private void DestroyBox()
