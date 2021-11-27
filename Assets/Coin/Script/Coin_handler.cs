@@ -22,7 +22,7 @@ public class Coin_handler : MonoBehaviour
             
             playerScript.coins += ScorePoint;
             Debug.Log(ScorePoint + " Added");
-            destroyParticle.transform.parent = null;
+            destroyParticle.transform.parent = transform.parent;
             destroyParticle.Play();
             Destroy(gameObject);
         }

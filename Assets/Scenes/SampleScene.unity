@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.090123124, g: 0.28181505, b: 0.48604745, a: 1}
+  m_IndirectSpecularColor: {r: 0.085245974, g: 0.27900007, b: 0.48329502, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -143,6 +143,11 @@ MonoBehaviour:
   speed: 0
   isGround: 0
   coins: 0
+  strength: 10
+  attackCooldown: 0
+  attackableRange:
+    serializedVersion: 2
+    m_Bits: 0
   _sprintSpeed: 5
   jumpForce: 200
   rotationSpeed: 1000
@@ -193,8 +198,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0.72}
+  m_Size: {x: 0.6, y: 1.0002577, z: 1}
+  m_Center: {x: 0, y: 0.7698711, z: 0.94000006}
 --- !u!1 &76790051
 GameObject:
   m_ObjectHideFlags: 3
