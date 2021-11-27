@@ -8,14 +8,13 @@ namespace Character
     public class PlayerMovement : MonoBehaviour
     {
         public float speed = 1f;
-        public bool isGround = false;
         public int coins = 0;
 
         public int strength = 10;
         public int attackCooldown = 1;
-        public float attackableRange = 0.7f;
         public GameObject attackPoint;
         public LayerMask attackableLayer;
+        private float attackableRange = 0.3f;
 
 
         [SerializeField] private float _sprintSpeed = 5f;
@@ -27,6 +26,7 @@ namespace Character
         private Rigidbody rb;
         private Animator animator;
         private float velocity;
+        private bool isGround = false;
 
         private static readonly int Speed = Animator.StringToHash("speed");
         private static readonly int IsInAir = Animator.StringToHash("isInAir");
@@ -70,12 +70,9 @@ namespace Character
 
             if (Input.GetButton("Attack") && canAttack)
             {
+                animator.SetBool(AttackAnim, canAttack);
                 Attack();
-                animator.SetBool(AttackAnim, !canAttack);
-            }
-            else
-            {
-                animator.SetBool(AttackAnim, !canAttack);
+                
             }
 
             if (Input.GetButton("Jump"))
@@ -86,19 +83,6 @@ namespace Character
                 }
             }
         }
-
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            if (hasFocus)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
-
         private void Attack()
         {
             Collider[] hittedColliders =
@@ -115,18 +99,25 @@ namespace Character
             StartCoroutine(AttackCountdown());
         }
 
-        private IEnumerator AttackCountdown()
+        IEnumerator AttackCountdown()
         {
-            int Counter = attackCooldown;
-            while (Counter > 0)
-            {
-                yield return new WaitForSeconds(1);
-                Counter--;
-            }
-
+            yield return new WaitForSeconds(attackCooldown);
             canAttack = true;
+            animator.SetBool(AttackAnim, false);
+            
         }
 
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (hasFocus)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
 
         void OnTriggerStay(Collider col)
         {
