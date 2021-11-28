@@ -48,4 +48,15 @@ public class enemyAI : Unit
     {
         throw new NotImplementedException();
     }
+
+    protected override void SetAnimIsInAir(bool _isGround)
+    {
+    }
+
+    protected override void SetAnimSpeed(float _speed)
+    {
+        throw new NotImplementedException();
+    }
+
+  
 }

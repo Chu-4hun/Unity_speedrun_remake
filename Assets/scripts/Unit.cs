@@ -3,16 +3,57 @@ using UnityEngine;
 
 public abstract class Unit : MonoBehaviour
 {
+    
     protected int strength = 10;
     protected int attackCooldown = 1;
+    [SerializeField] protected Rigidbody rb;
+    [SerializeField] protected float jumpForce = 5f;
     [SerializeField] protected GameObject attackPoint;
     [SerializeField] protected LayerMask attackableLayer;
     protected float attackableRange = 0.3f;
-    
+
     private bool canAttack = true;
-    
+    private bool isGround;
+
     protected abstract void StartAnimAttack();
     protected abstract void EndAnimAttack();
+    protected abstract void SetAnimIsInAir(bool _isGround);
+    protected abstract void SetAnimSpeed(float _speed);
+
+
+    protected virtual void moveTo(float horizontal, float vertical, float speed)
+    {
+        SetAnimSpeed(0f);
+        Vector3 movementVec = new Vector3(horizontal, 0f, vertical);
+
+        if (movementVec.magnitude > 0)
+        {
+            SetAnimSpeed(speed);
+            movementVec.Normalize();
+            movementVec *= speed * Time.deltaTime;
+            transform.Translate(movementVec, Space.World);
+        }
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        if (col.CompareTag("Ground")) isGround = true;
+        SetAnimIsInAir(isGround);
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.CompareTag("Ground")) isGround = false;
+        SetAnimIsInAir(isGround);
+    }
+
+    protected void jump()
+    {
+        if (isGround)
+        {
+            rb.AddForce(Vector3.up * (jumpForce * Time.deltaTime), ForceMode.Impulse);
+        }
+    }
 
     protected void attack()
     {

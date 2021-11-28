@@ -7,19 +7,14 @@ namespace Character
 {
     public class PlayerMovement : Unit
     {
-        public float speed = 1f;
         public int coins = 0;
-        
-        
+
+
         [SerializeField] private float _sprintSpeed = 5f;
-        [SerializeField] private float jumpForce = 5f;
         [SerializeField] private float rotationSpeed = 5f;
         [SerializeField] private Transform cameraTransform;
         
-        private Rigidbody rb;
         private Animator animator;
-        private float velocity;
-        private bool isGround = false;
 
         private static readonly int Speed = Animator.StringToHash("speed");
         private static readonly int IsInAir = Animator.StringToHash("isInAir");
@@ -39,27 +34,8 @@ namespace Character
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
-            speed = Input.GetButton("Sprint") ? _sprintSpeed : 1f;
-            animator.SetFloat(Speed, 0);
-
-            Vector3 movementVec = new Vector3(horizontal, 0f, vertical);
-
-            if (movementVec.magnitude > 0)
-            {
-                animator.SetFloat(Speed, speed);
-                movementVec.Normalize();
-                movementVec *= speed * Time.deltaTime;
-                movementVec = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * movementVec;
-                transform.Translate(movementVec, Space.World);
-            }
-
-            if (movementVec != Vector3.zero)
-            {
-                Quaternion toRotation = Quaternion.LookRotation(movementVec, Vector3.up);
-
-                transform.rotation =
-                    Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-            }
+            float speed = Input.GetButton("Sprint") ? _sprintSpeed : 1f;
+            moveTo(horizontal,vertical,speed);
 
             if (Input.GetButton("Attack") && isCanAttack())
             {
@@ -68,37 +44,30 @@ namespace Character
 
             if (Input.GetButton("Jump"))
             {
-                if (isGround)
-                {
-                    rb.AddForce(Vector3.up * (jumpForce * Time.deltaTime), ForceMode.Impulse);
-                }
+                jump();
             }
-
         }
 
-
-        private void OnApplicationFocus(bool hasFocus)
+        protected override void moveTo(float horizontal, float vertical, float speed)
         {
-            if (hasFocus)
+            SetAnimSpeed(0f);
+            Vector3 movementVec = new Vector3(horizontal, 0f, vertical);
+
+            if (movementVec.magnitude > 0)
             {
-                Cursor.lockState = CursorLockMode.Locked;
+                SetAnimSpeed(speed);
+                movementVec.Normalize();
+                movementVec *= speed * Time.deltaTime;
+                movementVec = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * movementVec;
+                transform.Translate(movementVec, Space.World);
             }
-            else
+            if (movementVec != Vector3.zero)
             {
-                Cursor.lockState = CursorLockMode.None;
+                Quaternion toRotation = Quaternion.LookRotation(movementVec, Vector3.up);
+
+                transform.rotation =
+                    Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
             }
-        }
-
-        void OnTriggerStay(Collider col)
-        {
-            if (col.CompareTag("Ground")) isGround = true;
-            animator.SetBool(IsInAir, !isGround);
-        }
-
-        void OnTriggerExit(Collider col)
-        {
-            if (col.CompareTag("Ground")) isGround = false;
-            animator.SetBool(IsInAir, !isGround);
         }
 
 
@@ -112,5 +81,15 @@ namespace Character
         {
             animator.SetBool(AttackAnim, false);
         }
+        
+        protected override void SetAnimSpeed(float _speed)
+        {
+            animator.SetFloat(Speed, _speed);
+        }
+        protected override void SetAnimIsInAir(bool isGround)
+        {
+            animator.SetBool(IsInAir, !isGround);
+        }
+        
     }
 }
