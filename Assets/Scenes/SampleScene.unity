@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.085245974, g: 0.27900007, b: 0.48329502, a: 1}
+  m_IndirectSpecularColor: {r: 0.090123124, g: 0.28181505, b: 0.48604745, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -140,16 +140,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91cf47a1348276f4fae814abae394e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  coins: 0
-  strength: 10
-  attackCooldown: 1
+  rb: {fileID: 0}
+  jumpForce: 100
   attackPoint: {fileID: 1318858981}
   attackableLayer:
     serializedVersion: 2
     m_Bits: 8
+  coins: 0
   _sprintSpeed: 5
-  jumpForce: 100
   rotationSpeed: 1000
   cameraTransform: {fileID: 963194228}
 --- !u!136 &52149271
@@ -2216,6 +2214,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b64c2ec79ee40994db5abf86893defcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  jumpForce: 5
+  attackPoint: {fileID: 0}
+  attackableLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!135 &1459170875
 SphereCollider:
   m_ObjectHideFlags: 0

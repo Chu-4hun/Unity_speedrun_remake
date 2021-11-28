@@ -2,19 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class enemyAI : Unit
 {
+    [SerializeField] private float speed = 1f;
+    [SerializeField] private NavMeshAgent _agent;
     private Vector3 startingPosition;
     private Vector3 roamingPosition;
     private float Distance;
-    
 
     private void Start()
     {
-        startingPosition = transform.position;
-        roamingPosition = GetRoamingPosition();
+        _agent.speed = speed;
+        // startingPosition = transform.position;
+        // roamingPosition = GetRoamingPosition();
     }
 
     private void Update()
@@ -33,20 +36,21 @@ public class enemyAI : Unit
     }
     void OnTriggerStay(Collider col)
     {
+        Debug.Log("Enemy saw" + col.name);
         if (col.CompareTag("Player") )
         {
-            
+            _agent.SetDestination(col.transform.position);
         }
     }
+    
 
     protected override void StartAnimAttack()
     {
-        throw new NotImplementedException();
     }
 
     protected override void EndAnimAttack()
     {
-        throw new NotImplementedException();
+        
     }
 
     protected override void SetAnimIsInAir(bool _isGround)
@@ -55,7 +59,6 @@ public class enemyAI : Unit
 
     protected override void SetAnimSpeed(float _speed)
     {
-        throw new NotImplementedException();
     }
 
   

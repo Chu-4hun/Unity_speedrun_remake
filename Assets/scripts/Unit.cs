@@ -35,6 +35,19 @@ public abstract class Unit : MonoBehaviour
             transform.Translate(movementVec, Space.World);
         }
     }
+    protected virtual void moveTo(Vector3 dir, float speed)
+    {
+        SetAnimSpeed(0f);
+        Vector3 movementVec = dir;
+
+        if (movementVec.magnitude > 0)
+        {
+            SetAnimSpeed(speed);
+            movementVec.Normalize();
+            movementVec *= speed * Time.deltaTime;
+            transform.Translate(movementVec, Space.World);
+        }
+    }
     public bool isCanAttack()
     {
         return canAttack;
