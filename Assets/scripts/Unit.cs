@@ -4,8 +4,9 @@ using UnityEngine;
 public abstract class Unit : MonoBehaviour
 {
     
-    protected int strength = 10;
+    protected int strength = 10; //Damage per 1 hit
     protected int attackCooldown = 1;
+    
     [SerializeField] protected Rigidbody rb;
     [SerializeField] protected float jumpForce = 5f;
     [SerializeField] protected GameObject attackPoint;
@@ -34,19 +35,11 @@ public abstract class Unit : MonoBehaviour
             transform.Translate(movementVec, Space.World);
         }
     }
-
-    void OnTriggerStay(Collider col)
+    public bool isCanAttack()
     {
-        if (col.CompareTag("Ground")) isGround = true;
-        SetAnimIsInAir(isGround);
+        return canAttack;
     }
-
-    void OnTriggerExit(Collider col)
-    {
-        if (col.CompareTag("Ground")) isGround = false;
-        SetAnimIsInAir(isGround);
-    }
-
+    
     protected void jump()
     {
         if (isGround)
@@ -54,7 +47,6 @@ public abstract class Unit : MonoBehaviour
             rb.AddForce(Vector3.up * (jumpForce * Time.deltaTime), ForceMode.Impulse);
         }
     }
-
     protected void attack()
     {
         StartAnimAttack();
@@ -70,16 +62,26 @@ public abstract class Unit : MonoBehaviour
         canAttack = false;
         StartCoroutine(AttackCountdown());
     }
-
-    public bool isCanAttack()
-    {
-        return canAttack;
-    }
-
+    //Кулдаун 
+    //Cooldown
     IEnumerator AttackCountdown()
     {
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
         EndAnimAttack();
+    }
+    
+    //Проверка на на земле ли unit
+    //Сheck is character on the ground 
+     void OnTriggerStay(Collider col)
+    {
+        if (col.CompareTag("Ground")) isGround = true;
+        SetAnimIsInAir(isGround);
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.CompareTag("Ground")) isGround = false;
+        SetAnimIsInAir(isGround);
     }
 }
