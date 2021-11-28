@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class enemyAI : MonoBehaviour
+public class enemyAI : Unit
 {
     private Vector3 startingPosition;
     private Vector3 roamingPosition;
@@ -38,5 +38,14 @@ public class enemyAI : MonoBehaviour
             
         }
     }
-    
+
+    protected override void StartAnimAttack()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void EndAnimAttack()
+    {
+        throw new NotImplementedException();
+    }
 }

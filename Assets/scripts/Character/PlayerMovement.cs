@@ -5,24 +5,17 @@ using UnityEngine.Serialization;
 
 namespace Character
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : Unit
     {
         public float speed = 1f;
         public int coins = 0;
-
-        public int strength = 10;
-        public int attackCooldown = 1;
-        public GameObject attackPoint;
-        public LayerMask attackableLayer;
-        private float attackableRange = 0.3f;
-
-
+        
+        
         [SerializeField] private float _sprintSpeed = 5f;
         [SerializeField] private float jumpForce = 5f;
         [SerializeField] private float rotationSpeed = 5f;
         [SerializeField] private Transform cameraTransform;
-
-        private bool canAttack = true;
+        
         private Rigidbody rb;
         private Animator animator;
         private float velocity;
@@ -68,11 +61,9 @@ namespace Character
                     Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
             }
 
-            if (Input.GetButton("Attack") && canAttack)
+            if (Input.GetButton("Attack") && isCanAttack())
             {
-                animator.SetBool(AttackAnim, canAttack);
-                Attack();
-                
+                attack();
             }
 
             if (Input.GetButton("Jump"))
@@ -82,30 +73,9 @@ namespace Character
                     rb.AddForce(Vector3.up * (jumpForce * Time.deltaTime), ForceMode.Impulse);
                 }
             }
-        }
-        private void Attack()
-        {
-            Collider[] hittedColliders =
-                Physics.OverlapSphere(attackPoint.transform.position, attackableRange, attackableLayer);
-            foreach (Collider hittedCollider in hittedColliders)
-            {
-                IAttackable attackable = hittedCollider.gameObject.GetComponent<IAttackable>();
-                attackable.DealDamage(strength);
-                Debug.Log(hittedCollider.name + "deal" + strength + "damage");
-            }
 
-            canAttack = false;
-
-            StartCoroutine(AttackCountdown());
         }
 
-        IEnumerator AttackCountdown()
-        {
-            yield return new WaitForSeconds(attackCooldown);
-            canAttack = true;
-            animator.SetBool(AttackAnim, false);
-            
-        }
 
         private void OnApplicationFocus(bool hasFocus)
         {
@@ -133,5 +103,14 @@ namespace Character
 
 
         // Update is called once per frame
+        protected override void StartAnimAttack()
+        {
+            animator.SetBool(AttackAnim, isCanAttack());
+        }
+
+        protected override void EndAnimAttack()
+        {
+            animator.SetBool(AttackAnim, false);
+        }
     }
 }
