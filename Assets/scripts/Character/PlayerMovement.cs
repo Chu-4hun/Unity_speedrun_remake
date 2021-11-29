@@ -5,9 +5,10 @@ using UnityEngine.Serialization;
 
 namespace Character
 {
-    public class PlayerMovement : Unit
+    public class PlayerMovement : Unit, IAttackable
     {
         public int coins = 0;
+       
 
 
         [SerializeField] private float _sprintSpeed = 5f;
@@ -28,6 +29,7 @@ namespace Character
 
         void Start()
         {
+            
         }
 
         void Update()
@@ -90,6 +92,10 @@ namespace Character
         {
             animator.SetBool(IsInAir, !isGround);
         }
-        
+
+        public void DealDamage(int count)
+        {
+            HP -= count;
+        }
     }
 }

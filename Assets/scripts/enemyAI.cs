@@ -40,8 +40,17 @@ public class enemyAI : Unit
         if (col.CompareTag("Player") )
         {
             _agent.SetDestination(col.transform.position);
+            // if (Physics.Raycast(this.transform.position,col.transform.TransformDirection(Vector3.forward),10, "Player"))
+            // {
+            //     
+            // }
+            if (_agent.isStopped)
+            {
+                attack();
+            }
         }
     }
+    
     
 
     protected override void StartAnimAttack()

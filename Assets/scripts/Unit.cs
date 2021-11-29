@@ -7,6 +7,7 @@ public abstract class Unit : MonoBehaviour
     protected int strength = 10; //Damage per 1 hit
     protected int attackCooldown = 1;
     
+    [SerializeField] public int HP;
     [SerializeField] protected Rigidbody rb;
     [SerializeField] protected float jumpForce = 5f;
     [SerializeField] protected GameObject attackPoint;
