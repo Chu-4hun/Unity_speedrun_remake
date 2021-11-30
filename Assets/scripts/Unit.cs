@@ -4,17 +4,17 @@ using UnityEngine;
 public abstract class Unit : MonoBehaviour
 {
     
-    protected int strength = 10; //Damage per 1 hit
-    protected int attackCooldown = 1;
     
     [SerializeField] public int HP;
-    [SerializeField] protected Rigidbody rb;
+    [SerializeField]protected int strength = 10; //Damage per 1 hit
+    [SerializeField]protected int attackCooldown = 1;
     [SerializeField] protected float jumpForce = 5f;
+    [SerializeField] protected Rigidbody rb;
     [SerializeField] protected GameObject attackPoint;
     [SerializeField] protected LayerMask attackableLayer;
-    protected float attackableRange = 0.3f;
+    [SerializeField] protected float attackableRange = 0.3f;
 
-    private bool canAttack = true;
+    protected bool canAttack = true;
     private bool isGround;
 
     protected abstract void StartAnimAttack();
@@ -70,7 +70,7 @@ public abstract class Unit : MonoBehaviour
         {
             IAttackable attackable = hittedCollider.gameObject.GetComponent<IAttackable>();
             attackable.DealDamage(strength);
-            Debug.Log(hittedCollider.name + "deal" + strength + "damage");
+            Debug.Log(hittedCollider.name + " deal " + strength + " damage");
         }
 
         canAttack = false;

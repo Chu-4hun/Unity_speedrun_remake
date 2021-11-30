@@ -9,9 +9,14 @@ public class enemyAI : Unit
 {
     [SerializeField] private float speed = 1f;
     [SerializeField] private NavMeshAgent _agent;
-    private Vector3 startingPosition;
-    private Vector3 roamingPosition;
-    private float Distance;
+
+    [SerializeField] private LayerMask _player_mask;
+    private float _distanceToPlayer;
+
+    // private Vector3 startingPosition;
+    // private Vector3 roamingPosition;
+    // private float Distance;
+
 
     private void Start()
     {
@@ -22,36 +27,47 @@ public class enemyAI : Unit
 
     private void Update()
     {
-        
     }
 
-    private Vector3 GetRoamingPosition()
-    {
-        return startingPosition + GetRandomDir() * Random.Range(10f,70f);
-    }
+    // private Vector3 GetRoamingPosition()
+    // {
+    //     return startingPosition + GetRandomDir() * Random.Range(10f,70f);
+    // }
 
     public static Vector3 GetRandomDir()
     {
         return new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
     }
+
+    private void FixedUpdate()
+    {
+        
+    }
+
     void OnTriggerStay(Collider col)
     {
-        Debug.Log("Enemy saw" + col.name);
-        if (col.CompareTag("Player") )
+        if (col.CompareTag("Player"))
         {
             _agent.SetDestination(col.transform.position);
-            // if (Physics.Raycast(this.transform.position,col.transform.TransformDirection(Vector3.forward),10, "Player"))
-            // {
-            //     
-            // }
-            if (_agent.isStopped)
+            _distanceToPlayer = Vector3.Distance(col.transform.position, transform.position);
+            
+
+            // Physics.Raycast(this.transform.position,col.transform.TransformDirection(Vector3.forward),15, _player_mask)
+            if (_distanceToPlayer < 2)
             {
+                _agent.isStopped = true;
+                Debug.Log("Enemy stopped by " + col.name);
+            }
+
+            if (_agent.isStopped && canAttack)
+            {
+                Debug.Log("Enemy trying to attack " + col.name);
                 attack();
+                _agent.isStopped = false;
             }
         }
     }
-    
-    
+
 
     protected override void StartAnimAttack()
     {
@@ -59,7 +75,6 @@ public class enemyAI : Unit
 
     protected override void EndAnimAttack()
     {
-        
     }
 
     protected override void SetAnimIsInAir(bool _isGround)
@@ -69,6 +84,4 @@ public class enemyAI : Unit
     protected override void SetAnimSpeed(float _speed)
     {
     }
-
-  
 }
