@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class Unit : MonoBehaviour
@@ -21,6 +22,8 @@ public abstract class Unit : MonoBehaviour
     protected abstract void EndAnimAttack();
     protected abstract void SetAnimIsInAir(bool _isGround);
     protected abstract void SetAnimSpeed(float _speed);
+    protected abstract void Death();
+    
 
 
     protected virtual void moveTo(float horizontal, float vertical, float speed)
@@ -70,7 +73,7 @@ public abstract class Unit : MonoBehaviour
         {
             IAttackable attackable = hittedCollider.gameObject.GetComponent<IAttackable>();
             attackable.DealDamage(strength);
-            Debug.Log(hittedCollider.name + " deal " + strength + " damage");
+            // Debug.Log(hittedCollider.name + " deal " + strength + " damage");
         }
 
         canAttack = false;

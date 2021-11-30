@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-public class enemyAI : Unit
+public class enemyAI : Unit, IAttackable
 {
     [SerializeField] private float speed = 1f;
     [SerializeField] private NavMeshAgent _agent;
@@ -25,8 +25,17 @@ public class enemyAI : Unit
         // roamingPosition = GetRoamingPosition();
     }
 
+    protected override void Death()
+    {
+        Destroy(gameObject);
+    }
+
     private void Update()
     {
+        if (HP <= 0)
+        {
+            Death();
+        }
     }
 
     // private Vector3 GetRoamingPosition()
@@ -41,7 +50,6 @@ public class enemyAI : Unit
 
     private void FixedUpdate()
     {
-        
     }
 
     void OnTriggerStay(Collider col)
@@ -49,8 +57,8 @@ public class enemyAI : Unit
         if (col.CompareTag("Player"))
         {
             _agent.SetDestination(col.transform.position);
-            _distanceToPlayer = Vector3.Distance(col.transform.position, transform.position);
-            
+            _distanceToPlayer = Vector3.Distance(this.transform.position, col.transform.position);
+
 
             // Physics.Raycast(this.transform.position,col.transform.TransformDirection(Vector3.forward),15, _player_mask)
             if (_distanceToPlayer < 2)
@@ -83,5 +91,10 @@ public class enemyAI : Unit
 
     protected override void SetAnimSpeed(float _speed)
     {
+    }
+
+    public void DealDamage(int count)
+    {
+        HP -= count;
     }
 }

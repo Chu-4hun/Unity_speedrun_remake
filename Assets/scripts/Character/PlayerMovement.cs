@@ -8,13 +8,12 @@ namespace Character
     public class PlayerMovement : Unit, IAttackable
     {
         public int coins = 0;
-       
 
 
         [SerializeField] private float _sprintSpeed = 5f;
         [SerializeField] private float rotationSpeed = 5f;
         [SerializeField] private Transform cameraTransform;
-        
+
         private Animator animator;
 
         private static readonly int Speed = Animator.StringToHash("speed");
@@ -29,7 +28,11 @@ namespace Character
 
         void Start()
         {
-            
+        }
+
+        protected override void Death()
+        {
+            Debug.Log("Player is dead");
         }
 
         void Update()
@@ -37,7 +40,12 @@ namespace Character
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
             float speed = Input.GetButton("Sprint") ? _sprintSpeed : 1f;
-            moveTo(horizontal,vertical,speed);
+            moveTo(horizontal, vertical, speed);
+
+            if (HP <= 0)
+            {
+                Death();
+            }
 
             if (Input.GetButton("Attack") && isCanAttack())
             {
@@ -63,6 +71,7 @@ namespace Character
                 movementVec = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * movementVec;
                 transform.Translate(movementVec, Space.World);
             }
+
             if (movementVec != Vector3.zero)
             {
                 Quaternion toRotation = Quaternion.LookRotation(movementVec, Vector3.up);
@@ -83,11 +92,12 @@ namespace Character
         {
             animator.SetBool(AttackAnim, false);
         }
-        
+
         protected override void SetAnimSpeed(float _speed)
         {
             animator.SetFloat(Speed, _speed);
         }
+
         protected override void SetAnimIsInAir(bool isGround)
         {
             animator.SetBool(IsInAir, !isGround);
