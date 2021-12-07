@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace Character
@@ -10,6 +12,7 @@ namespace Character
         public int coins = 0;
 
 
+        [SerializeField] private GameOverManager gameOverManager;
         [SerializeField] private float _sprintSpeed = 5f;
         [SerializeField] private float rotationSpeed = 5f;
         [SerializeField] private Transform cameraTransform;
@@ -26,13 +29,13 @@ namespace Character
             animator = GetComponent<Animator>();
         }
 
-        void Start()
-        {
-        }
+       
 
         protected override void Death()
         {
             Debug.Log("Player is dead");
+            gameOverManager.gameObject.SetActive(true);
+            Destroy(gameObject);
         }
 
         void Update()
