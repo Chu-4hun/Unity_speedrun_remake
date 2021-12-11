@@ -75,7 +75,7 @@ namespace Character
                 transform.Translate(movementVec, Space.World);
             }
 
-            if (movementVec != Vector3.zero)
+            if (movementVec != Vector3.zero && isGround)
             {
                 Quaternion toRotation = Quaternion.LookRotation(movementVec, Vector3.up);
 
