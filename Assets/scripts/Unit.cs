@@ -16,7 +16,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected float attackableRange = 0.3f;
 
     protected bool canAttack = true;
-    private bool isGround;
+    protected bool isGround;
 
     protected abstract void StartAnimAttack();
     protected abstract void EndAnimAttack();
