@@ -8,11 +8,12 @@ using UnityEngine.SceneManagement;
 public class portal_handler : MonoBehaviour
 {
     [SerializeField] private int levelIndex = 1;
+    [SerializeField] private int  coinsToCompete = 10;
     private void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))
         {
-            if (col.GetComponent<PlayerMovement>().coins >= 10)
+            if (col.GetComponent<PlayerMovement>().coins >= coinsToCompete)
             {
                 SceneManager.LoadScene(levelIndex);
             }
