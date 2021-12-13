@@ -12,17 +12,9 @@ public class enemyAI : Unit, IAttackable
 
     [SerializeField] private LayerMask _player_mask;
     private float _distanceToPlayer;
-
-    // private Vector3 startingPosition;
-    // private Vector3 roamingPosition;
-    // private float Distance;
-
-
     private void Start()
     {
         _agent.speed = speed;
-        // startingPosition = transform.position;
-        // roamingPosition = GetRoamingPosition();
     }
 
     protected override void Death()
@@ -37,21 +29,6 @@ public class enemyAI : Unit, IAttackable
             Death();
         }
     }
-
-    // private Vector3 GetRoamingPosition()
-    // {
-    //     return startingPosition + GetRandomDir() * Random.Range(10f,70f);
-    // }
-
-    public static Vector3 GetRandomDir()
-    {
-        return new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-    }
-
-    private void FixedUpdate()
-    {
-    }
-
     void OnTriggerStay(Collider col)
     {
         if (col.CompareTag("Player"))
