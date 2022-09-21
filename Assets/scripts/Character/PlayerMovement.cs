@@ -27,6 +27,7 @@ namespace Character
         {
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
+            Debug.Log(GlobalVariables.Get<string>("name"));
         }
 
        

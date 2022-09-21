@@ -1,22 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+namespace UI
 {
-    // public void PlayGame()
-    // {
-    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    // }
-    public void PlayGame(int levelIndex)
+    public class MainMenu : MonoBehaviour
     {
-        SceneManager.LoadScene(levelIndex);
-    }
+        // public void PlayGame()
+        // {
+        //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        // }
+        public void PlayGame(int levelIndex)
+        {
+            SceneManager.LoadScene(levelIndex);
+        }
 
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
     
+    }
 }
