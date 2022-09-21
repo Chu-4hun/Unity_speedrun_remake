@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public Slider slider;
     public Text Score;
+    public Text PlayerNickname;
     public PlayerMovement player;
 
     private void OnApplicationFocus(bool hasFocus)
@@ -30,5 +31,6 @@ public class GameManager : MonoBehaviour
     {
         slider.value = player.HP;
         Score.text = "Score: " + player.coins;
+        PlayerNickname.text = "Name: " + GlobalVariables.Get<string>("name");
     }
 }
