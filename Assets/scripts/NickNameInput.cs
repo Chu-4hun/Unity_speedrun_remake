@@ -9,7 +9,7 @@ public class NickNameInput : MonoBehaviour
 
     private void OnGUI()
     {
-        nickname = GUI.TextArea(new Rect(10f, 10f, 100f, 20f), text:nickname, 20);
+        nickname = GUI.TextArea(new Rect(10f, 10f, 200f, 40f), text:nickname, 20);
         GlobalVariables.Set("name", nickname);
     }
 }

@@ -9,10 +9,11 @@ public class GameManager : MonoBehaviour
     public Text Score;
     public Text PlayerNickname;
     public PlayerMovement player;
+    public bool isUIScene;
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        if (hasFocus)
+        if (hasFocus && !isUIScene)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -20,15 +21,18 @@ public class GameManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
         }
+        
     }
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        if (!isUIScene)
+            Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
+        if (isUIScene)return;
         slider.value = player.HP;
         Score.text = "Score: " + player.coins;
         PlayerNickname.text = "Name: " + GlobalVariables.Get<string>("name");

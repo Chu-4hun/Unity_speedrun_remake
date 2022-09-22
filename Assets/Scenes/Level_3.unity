@@ -288,6 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 118180901}
   Score: {fileID: 1996587140}
+  PlayerNickname: {fileID: 432660760}
   player: {fileID: 1708598050}
 --- !u!4 &244444927
 Transform:
@@ -640,6 +641,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74a88aa5d7d5d3c44aa1a1ac8958e270, type: 3}
+--- !u!114 &432660760 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6395903417490719358, guid: 74a88aa5d7d5d3c44aa1a1ac8958e270, type: 3}
+  m_PrefabInstance: {fileID: 432660759}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &464183222
 GameObject:
   m_ObjectHideFlags: 0
@@ -1377,7 +1389,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3187655947368354217, guid: 97b4c82f30ffdd7459ee31291ca81d0e, type: 3}
       propertyPath: levelIndex
-      value: 0
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3187655947368354217, guid: 97b4c82f30ffdd7459ee31291ca81d0e, type: 3}
+      propertyPath: coinsToCompete
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97b4c82f30ffdd7459ee31291ca81d0e, type: 3}
