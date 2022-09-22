@@ -1360,7 +1360,6 @@ MonoBehaviour:
   Score: {fileID: 0}
   PlayerNickname: {fileID: 0}
   player: {fileID: 0}
-  isUIScene: 1
 --- !u!4 &800877471
 Transform:
   m_ObjectHideFlags: 0
@@ -2299,6 +2298,7 @@ GameObject:
   - component: {fileID: 1674053664}
   - component: {fileID: 1674053663}
   - component: {fileID: 1674053666}
+  - component: {fileID: 1674053667}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2384,6 +2384,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nickname: 
+--- !u!114 &1674053667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674053662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c01769990da44bb44af0e5310ba7c174, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2071649632
 GameObject:
   m_ObjectHideFlags: 0
